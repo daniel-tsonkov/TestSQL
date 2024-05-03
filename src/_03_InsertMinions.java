@@ -25,6 +25,14 @@ public class _03_InsertMinions {
 
         String villainName = scanner.nextLine().split(" ")[1];
 
+        int townId = getOrInsertTown(connection, minionTown);
+
+        System.out.println(townId);
+
+        connection.close();
+    }
+
+    private static int getOrInsertTown(Connection connection, String minionTown) throws SQLException {
         PreparedStatement selectTown = connection.prepareStatement("SELECT id FROM towns WHERE name = ?");
         selectTown.setString(1, minionTown);
         ResultSet townSet = selectTown.executeQuery();
@@ -43,8 +51,6 @@ public class _03_InsertMinions {
             townId = townSet.getInt("id");
         }
 
-        System.out.println(townId);
-
-        connection.close();
+        return townId;
     }
 }
