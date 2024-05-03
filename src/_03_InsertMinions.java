@@ -15,6 +15,9 @@ public class _03_InsertMinions {
         /*Minions: Robert 14 Berlin
           Villains: Gru*/
 
+        /*Minions: Cathleen 20 Liverpool
+        Villains: Gru*/
+
         String[] minionInfo = scanner.nextLine().split(" ");
         String minionName = minionInfo[1];
         int minionAge = Integer.parseInt(minionInfo[2]);
@@ -31,7 +34,10 @@ public class _03_InsertMinions {
             PreparedStatement insertTown = connection.prepareStatement("INSERT INTO towns(name) VALUES (?);");
 
             insertTown.setString(1, minionTown);
+            insertTown.executeUpdate();
+
             ResultSet newTownSet = selectTown.executeQuery();
+            newTownSet.next();
             townId = newTownSet.getInt("id");
         } else {
             townId = townSet.getInt("id");
