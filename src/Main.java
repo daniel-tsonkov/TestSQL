@@ -10,11 +10,14 @@ public class Main {
         Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.5.200:3306/minions_db", properties);
 
         PreparedStatement statement = connection.prepareStatement("" +
-                "SELECT name, COUNT(mv.minion_id) as minion_count from villains as v " +
+                "SELECT name, COUNT(DISTINCT mv.minion_id) as minion_count from villains as v " +
                 "JOIN minions_villains as mv on mv.villain_id = v.id " +
                 "GROUP by mv.villain_id " +
-                "HAVING minion_count > 15 " +
+                "HAVING minion_count > ? " +
                 "ORDER  BY minion_count DESC;");
+
+        statement.setInt(1, 15); //prevent from SQL injections
+
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
