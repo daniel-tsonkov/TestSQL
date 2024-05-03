@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.Properties;
 
-public class Main {
+public class _02_SelectByVillian {
     public static void main(String[] args) throws SQLException {
         Properties properties = new Properties();
         properties.setProperty("user", "test");
