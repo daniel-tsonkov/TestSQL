@@ -29,7 +29,7 @@ public class _03_InsertMinions {
         selectTown.setString(1, minionTown);
         ResultSet townSet = selectTown.executeQuery();
 
-        int townId = 0;
+        int townId;
         if (!townSet.next()) {
             PreparedStatement insertTown = connection.prepareStatement("INSERT INTO towns(name) VALUES (?);");
 
