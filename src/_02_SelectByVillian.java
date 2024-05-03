@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.Properties;
+import java.util.Scanner;
 
 public class _02_SelectByVillian {
     public static void main(String[] args) throws SQLException {
@@ -9,22 +10,21 @@ public class _02_SelectByVillian {
 
         Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.5.200:3306/minions_db", properties);
 
-        PreparedStatement statement = connection.prepareStatement("" +
-                "SELECT name, COUNT(DISTINCT mv.minion_id) as minion_count from villains as v " +
-                "JOIN minions_villains as mv on mv.villain_id = v.id " +
-                "GROUP by mv.villain_id " +
-                "HAVING minion_count > ? " +
-                "ORDER  BY minion_count DESC;");
+        Scanner scanner = new Scanner(System.in);
+        int villainId = Integer.parseInt(scanner.nextLine());
 
-        statement.setInt(1, 15); //prevent from SQL injections
+        PreparedStatement statement = connection.prepareStatement("SELECT name FROM villain WHERE id = ?");
+
+        statement.setInt(1, villainId); //prevent from SQL injections
 
         ResultSet resultSet = statement.executeQuery();
 
-        while (resultSet.next()) {
+        if (resultSet.next()) {
+            System.out.printf("No villain with ID %d exist in the database.", villainId);
+            return;
+        } else {
             String villainName = resultSet.getString("name");
-            int minionCount = resultSet.getInt("minion_count");
-
-            System.out.println(villainName + " " + minionCount);
+            System.out.println("Villain: " + villainName);
         }
 
         connection.close();
