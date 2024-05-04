@@ -41,8 +41,11 @@ public class _03_InsertMinions {
         int lastMinionId = lastMinionSet.getInt("id");
 
         PreparedStatement insertMinionsVillains = connection.prepareStatement("INSERT INTO minions_villains VALUE(?, ?)");
+        insertMinionsVillains.setInt(1, lastMinionId);
+        insertMinionsVillains.setInt(2, villainId);
+        insertMinionsVillains.executeUpdate();
 
-        System.out.printf("Succesfuly added %s to be minion og %s%n", minionName, villainName);
+        System.out.printf("Succesfuly added %s to be minion of %s%n", minionName, villainName);
 
         connection.close();
     }
