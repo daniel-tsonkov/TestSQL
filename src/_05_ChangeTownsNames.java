@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -23,15 +25,21 @@ public class _05_ChangeTownsNames {
         }
 
         System.out.printf("%d town names were affected.", updatedCount);
+
+        CallableStatement asd = connection.prepareCall("");
+
         PreparedStatement selectAllTowns = connection.prepareStatement("SELECT name FROM towns WHERE country = ?");
         selectAllTowns.setString(1, countryName);
         ResultSet townSet = selectAllTowns.executeQuery();
 
-        System.out.print("[");
+        List<String> towns = new ArrayList<>();
+
         while (townSet.next()) {
             String townName = townSet.getString("name");
-            System.out.print(townName + ",");
+            towns.add(townName);
         }
+
+        System.out.println(towns);
 
         connection.close();
     }
