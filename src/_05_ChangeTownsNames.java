@@ -26,8 +26,6 @@ public class _05_ChangeTownsNames {
 
         System.out.printf("%d town names were affected.", updatedCount);
 
-        CallableStatement asd = connection.prepareCall("");
-
         PreparedStatement selectAllTowns = connection.prepareStatement("SELECT name FROM towns WHERE country = ?");
         selectAllTowns.setString(1, countryName);
         ResultSet townSet = selectAllTowns.executeQuery();
