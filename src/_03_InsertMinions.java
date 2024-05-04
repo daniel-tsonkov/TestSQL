@@ -30,15 +30,19 @@ public class _03_InsertMinions {
 
         PreparedStatement insertMinion = connection.prepareStatement("INSERT INTO minions(name, age, town_id) VALUES(?, ?, ?)");
 
-        System.out.printf("Succesfuly added %s to be minion og %s%n", minionName, villainName);
         insertMinion.setString(1, minionName);
         insertMinion.setInt(2, minionAge);
         insertMinion.setInt(3, townId);
         insertMinion.executeUpdate();
 
         PreparedStatement getLastMinion = connection.prepareStatement("SELECT id FROM minions ORDER BY id DESC");
+        ResultSet lastMinionSet = getLastMinion.executeQuery();
+        lastMinionSet.next();
+        int lastMinionId = lastMinionSet.getInt("id");
 
         PreparedStatement insertMinionsVillains = connection.prepareStatement("INSERT INTO minions_villains VALUE(?, ?)");
+
+        System.out.printf("Succesfuly added %s to be minion og %s%n", minionName, villainName);
 
         connection.close();
     }
