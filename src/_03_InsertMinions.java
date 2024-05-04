@@ -26,10 +26,27 @@ public class _03_InsertMinions {
         String villainName = scanner.nextLine().split(" ")[1];
 
         int townId = getOrInsertTown(connection, minionTown);
+        int villainId = getOrInsertVillain(connection, villainName);
 
         System.out.println(townId);
 
         connection.close();
+    }
+
+    private static int getOrInsertVillain(Connection connection, String villainName) throws SQLException {
+        PreparedStatement selectVillain = connection.prepareStatement("SELECT id FROM villains WHERE name = ?");
+        selectVillain.setString(1, villainName);
+
+        ResultSet villainSet = selectVillain.executeQuery();
+
+        int villainId = 0;
+        if (!villainSet.next()) {
+            PreparedStatement insertVillain = connection.prepareStatement("INSERT INTO villains(name, evilness_factor) VALUE(?, ?)");
+        } else {
+            villainId = villainSet.getInt("id");
+        }
+
+        return villainId;
     }
 
     private static int getOrInsertTown(Connection connection, String minionTown) throws SQLException {
