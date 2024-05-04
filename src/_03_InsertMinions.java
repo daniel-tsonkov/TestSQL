@@ -28,7 +28,7 @@ public class _03_InsertMinions {
         int townId = getOrInsertTown(connection, minionTown);
         int villainId = getOrInsertVillain(connection, villainName);
 
-        System.out.println(townId);
+        System.out.printf("Succesfuly added %s to be minion og %s%n", minionName, villainName);
 
         connection.close();
     }
@@ -50,6 +50,8 @@ public class _03_InsertMinions {
             ResultSet newVillainSet = selectVillain.executeQuery();
             newVillainSet.next();
             villainId = newVillainSet.getInt("id");
+
+            System.out.printf("Villain %s was added to the database.%n", villainName);
         } else {
             villainId = villainSet.getInt("id");
         }
@@ -72,6 +74,7 @@ public class _03_InsertMinions {
             ResultSet newTownSet = selectTown.executeQuery();
             newTownSet.next();
             townId = newTownSet.getInt("id");
+            System.out.printf("Town %s was added to the database.%n", minionTown);
         } else {
             townId = townSet.getInt("id");
         }
