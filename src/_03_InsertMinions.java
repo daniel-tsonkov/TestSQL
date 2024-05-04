@@ -56,7 +56,7 @@ public class _03_InsertMinions {
 
         ResultSet villainSet = selectVillain.executeQuery();
 
-        int villainId = 0;
+        int villainId;
         if (!villainSet.next()) {
             PreparedStatement insertVillain = connection.prepareStatement("INSERT INTO villains(name, evilness_factor) VALUE(?, ?)");
             insertVillain.setString(1, villainName);
