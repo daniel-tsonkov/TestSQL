@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.Properties;
+import java.util.Scanner;
 
 public class _05_ChangeTownsNames {
     public static void main(String[] args) throws SQLException {
@@ -9,22 +10,27 @@ public class _05_ChangeTownsNames {
 
         Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.5.200:3306/minions_db", properties);
 
-        PreparedStatement statement = connection.prepareStatement("" +
-                "SELECT name, COUNT(DISTINCT mv.minion_id) as minion_count from villains as v " +
-                "JOIN minions_villains as mv on mv.villain_id = v.id " +
-                "GROUP by mv.villain_id " +
-                "HAVING minion_count > ? " +
-                "ORDER  BY minion_count DESC;");
+        Scanner scanner = new Scanner(System.in);
+        String countryName = scanner.nextLine();
 
-        statement.setInt(1, 15); //prevent from SQL injections
+        PreparedStatement updateTownNames = connection.prepareStatement("UPDATE towns SET name = UpPER(name) WHERE country = ?");
+        updateTownNames.setString(1, countryName);
+        int updatedCount = updateTownNames.executeUpdate();
 
-        ResultSet resultSet = statement.executeQuery();
+        if (updatedCount == 0) {
+            System.out.println("No town names were affected.");
+            return;
+        }
 
-        while (resultSet.next()) {
-            String villainName = resultSet.getString("name");
-            int minionCount = resultSet.getInt("minion_count");
+        System.out.printf("%d town names were affected.", updatedCount);
+        PreparedStatement selectAllTowns = connection.prepareStatement("SELECT name FROM towns WHERE country = ?");
+        selectAllTowns.setString(1, countryName);
+        ResultSet townSet = selectAllTowns.executeQuery();
 
-            System.out.println(villainName + " " + minionCount);
+        System.out.print("[");
+        while (townSet.next()) {
+            String townName = townSet.getString("name");
+            System.out.print(townName + ",");
         }
 
         connection.close();
