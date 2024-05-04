@@ -28,6 +28,8 @@ public class _03_InsertMinions {
         int townId = getOrInsertTown(connection, minionTown);
         int villainId = getOrInsertVillain(connection, villainName);
 
+        PreparedStatement insertMinion = connection.prepareStatement("INSERT INTO minions(name, age, town_id) VALUES(?, ?, ?)");
+
         System.out.printf("Succesfuly added %s to be minion og %s%n", minionName, villainName);
 
         connection.close();
