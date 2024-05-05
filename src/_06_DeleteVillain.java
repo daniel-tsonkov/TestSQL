@@ -15,10 +15,14 @@ public class _06_DeleteVillain {
 
         connection.setAutoCommit(false);
 
-        PreparedStatement statement = connection.prepareStatement("SELECT name FROM villains WHERE id = ?");
+        PreparedStatement selectVillain = connection.prepareStatement("SELECT name FROM villains WHERE id = ?");
 
-        statement.setInt(1, villainId);
-        statement.executeQuery();
+        selectVillain.setInt(1, villainId);
+        ResultSet villainSet = selectVillain.executeQuery();
+
+        if (!villainSet.next()) {
+            System.out.println("No such villain was found");
+        }
 
         try {
 
@@ -27,7 +31,7 @@ public class _06_DeleteVillain {
         }
 
 
-        ResultSet resultSet = statement.executeQuery();
+        ResultSet resultSet = selectVillain.executeQuery();
 
 
 
