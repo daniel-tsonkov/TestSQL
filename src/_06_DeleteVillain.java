@@ -22,9 +22,17 @@ public class _06_DeleteVillain {
 
         if (!villainSet.next()) {
             System.out.println("No such villain was found");
+            return;
         }
 
         try {
+            PreparedStatement deleteMinionsVillains = connection.prepareStatement("DELETE FROM minions_villains WHERE villain_id = ?");
+            deleteMinionsVillains.setInt(1, villainId);
+            deleteMinionsVillains.executeUpdate();
+
+            PreparedStatement deleteVillain = connection.prepareStatement("DELETE FROM villain WHERE id = ?");
+            deleteVillain.setInt(1, villainId);
+            deleteVillain.executeUpdate();
 
         } catch (SQLException e) {
             connection.rollback();
@@ -32,7 +40,6 @@ public class _06_DeleteVillain {
 
 
         ResultSet resultSet = selectVillain.executeQuery();
-
 
 
         connection.close();
