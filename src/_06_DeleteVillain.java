@@ -13,7 +13,8 @@ public class _06_DeleteVillain {
         Scanner scanner = new Scanner(System.in);
         int villainId = Integer.parseInt(scanner.nextLine());
 
-        PreparedStatement selectVillain = connection.prepareStatement("SELECT name FROM villains WHERE id = ?");
+        PreparedStatement selectVillain = connection.prepareStatement(
+                "SELECT name FROM villains WHERE id = ?");
 
         selectVillain.setInt(1, villainId);
         ResultSet villainSet = selectVillain.executeQuery();
@@ -35,11 +36,13 @@ public class _06_DeleteVillain {
         connection.setAutoCommit(false);
 
         try {
-            PreparedStatement deleteMinionsVillains = connection.prepareStatement("DELETE FROM minions_villains WHERE villain_id = ?");
+            PreparedStatement deleteMinionsVillains = connection.prepareStatement(
+                    "DELETE FROM minions_villains WHERE villain_id = ?");
             deleteMinionsVillains.setInt(1, villainId);
             deleteMinionsVillains.executeUpdate();
 
-            PreparedStatement deleteVillain = connection.prepareStatement("DELETE FROM villains WHERE id = ?");
+            PreparedStatement deleteVillain = connection.prepareStatement(
+                    "DELETE FROM villains WHERE id = ?");
             deleteVillain.setInt(1, villainId);
             deleteVillain.executeUpdate();
 
@@ -51,7 +54,6 @@ public class _06_DeleteVillain {
             e.printStackTrace();
             connection.rollback();
         }
-
 
         connection.close();
     }
