@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.Properties;
+import java.util.Scanner;
 
 public class _06_DeleteVillain {
     public static void main(String[] args) throws SQLException {
@@ -9,23 +10,14 @@ public class _06_DeleteVillain {
 
         Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.5.200:3306/minions_db", properties);
 
-        PreparedStatement statement = connection.prepareStatement("" +
-                "SELECT name, COUNT(DISTINCT mv.minion_id) as minion_count from villains as v " +
-                "JOIN minions_villains as mv on mv.villain_id = v.id " +
-                "GROUP by mv.villain_id " +
-                "HAVING minion_count > ? " +
-                "ORDER  BY minion_count DESC;");
+        Scanner scanner = new Scanner(System.in);
+        int villainId = Integer.parseInt(scanner.nextLine());
 
-        statement.setInt(1, 15); //prevent from SQL injections
+        PreparedStatement statement = connection.prepareStatement("");
 
         ResultSet resultSet = statement.executeQuery();
 
-        while (resultSet.next()) {
-            String villainName = resultSet.getString("name");
-            int minionCount = resultSet.getInt("minion_count");
 
-            System.out.println(villainName + " " + minionCount);
-        }
 
         connection.close();
     }
