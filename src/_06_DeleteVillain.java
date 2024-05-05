@@ -13,7 +13,19 @@ public class _06_DeleteVillain {
         Scanner scanner = new Scanner(System.in);
         int villainId = Integer.parseInt(scanner.nextLine());
 
-        PreparedStatement statement = connection.prepareStatement("");
+        connection.setAutoCommit(false);
+
+        PreparedStatement statement = connection.prepareStatement("SELECT name FROM villains WHERE id = ?");
+
+        statement.setInt(1, villainId);
+        statement.executeQuery();
+
+        try {
+
+        } catch (SQLException e) {
+            connection.rollback();
+        }
+
 
         ResultSet resultSet = statement.executeQuery();
 
