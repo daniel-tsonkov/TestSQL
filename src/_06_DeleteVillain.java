@@ -1,6 +1,4 @@
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -26,9 +24,7 @@ public class _06_DeleteVillain {
         }
 
         String villainName = villainSet.getString("name");
-        connection.setAutoCommit(false);
 
-        List<Integer> minionsIds = new ArrayList<>();
         PreparedStatement selectAllVillainsMinions = connection.prepareStatement(
                 "SELECT COUNT(DISTINCT minion_id) as m_count FROM minions_villains WHERE villain_id = ?");
         selectAllVillainsMinions.setInt(1, villainId);
@@ -36,6 +32,8 @@ public class _06_DeleteVillain {
 
         minionsCountSet.next();
         int countMinionsDeleted = minionsCountSet.getInt("m_count");
+
+        connection.setAutoCommit(false);
 
         try {
             PreparedStatement deleteMinionsVillains = connection.prepareStatement("DELETE FROM minions_villains WHERE villain_id = ?");
@@ -45,10 +43,6 @@ public class _06_DeleteVillain {
             PreparedStatement deleteVillain = connection.prepareStatement("DELETE FROM villain WHERE id = ?");
             deleteVillain.setInt(1, villainId);
             deleteVillain.executeUpdate();
-
-            /*PreparedStatement deleteMinions = connection.prepareStatement("DELETE FROM minions WHERE id IN = ?");
-            deleteMinions.setInt(1, minionsIds);
-            int countMinionsDeleted = deleteMinions.executeUpdate();*/
 
             connection.commit();
             System.out.println(villainName + " was deleted");
