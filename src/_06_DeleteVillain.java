@@ -39,7 +39,7 @@ public class _06_DeleteVillain {
             deleteMinionsVillains.setInt(1, villainId);
             deleteMinionsVillains.executeUpdate();
 
-            PreparedStatement deleteVillain = connection.prepareStatement("DELETE FROM villain WHERE id = ?");
+            PreparedStatement deleteVillain = connection.prepareStatement("DELETE FROM villains WHERE id = ?");
             deleteVillain.setInt(1, villainId);
             deleteVillain.executeUpdate();
 
