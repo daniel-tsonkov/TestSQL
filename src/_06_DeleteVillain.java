@@ -29,7 +29,6 @@ public class _06_DeleteVillain {
                 "SELECT COUNT(DISTINCT minion_id) as m_count FROM minions_villains WHERE villain_id = ?");
         selectAllVillainsMinions.setInt(1, villainId);
         ResultSet minionsCountSet = selectAllVillainsMinions.executeQuery();
-
         minionsCountSet.next();
         int countMinionsDeleted = minionsCountSet.getInt("m_count");
 
@@ -44,13 +43,15 @@ public class _06_DeleteVillain {
             deleteVillain.setInt(1, villainId);
             deleteVillain.executeUpdate();
 
-            connection.commit();
             System.out.println(villainName + " was deleted");
             System.out.println(countMinionsDeleted + " minions deleted");
 
+            connection.commit();
         } catch (SQLException e) {
+            e.printStackTrace();
             connection.rollback();
         }
+
 
         connection.close();
     }
